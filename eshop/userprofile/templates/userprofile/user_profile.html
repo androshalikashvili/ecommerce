@@ -1,6 +1,8 @@
 {% extends "shop/base.html" %}
 {% block content %}
 <h2>User Profile</h2>
+<p><strong>{{ profile.user.first_name }}</strong></p>
+<p><strong>{{ profile.user.last_name }}</strong></p>
 <a href="{% url 'create_order' %}">Create Order</a>
 <h3>Your Orders</h3>
 <table>

@@ -4,9 +4,27 @@ from .models import Order
 from .forms import OrderForm
 
 @login_required
-def user_profile(request):
-    orders = Order.objects.filter(user=request.user)
-    return render(request, 'userprofile/user_profile.html', {'orders': orders})
+def profile(request):
+    user = request.user
+    orders = Order.objects.filter(user=user)
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST, request.FILES)
+        if form.is_valid():
+            custom_order = form.save(commit=False)
+            custom_order.user = user
+            custom_order.save()
+            return redirect('profile')
+    else:
+        form = OrderForm()
+
+    context = {
+        'user': user,
+        'orders': orders,
+        'form': form,
+    }
+    return render(request, 'userprofile/user_profile.html', context)
+    # return render(request, 'shop/cart.html', context)
 
 @login_required
 def create_order(request):
@@ -16,7 +34,7 @@ def create_order(request):
             order = form.save(commit=False)
             order.user = request.user
             order.save()
-            return redirect('user_profile')
+            return redirect('profile')
     else:
         form = OrderForm()
     return render(request, 'userprofile/create_order.html', {'form': form})
@@ -28,7 +46,7 @@ def edit_order(request, order_id):
         form = OrderForm(request.POST, request.FILES, instance=order)
         if form.is_valid():
             form.save()
-            return redirect('user_profile')
+            return redirect('profile')
     else:
         form = OrderForm(instance=order)
     return render(request, 'userprofile/edit_order.html', {'form': form})
@@ -38,5 +56,5 @@ def delete_order(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
     if request.method == 'POST':
         order.delete()
-        return redirect('user_profile')
+        return redirect('profile')
     return render(request, 'userprofile/delete_order.html', {'order': order})

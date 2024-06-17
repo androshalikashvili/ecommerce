@@ -2,40 +2,53 @@
 {% load static %}
 
 {% block content %}
-<div>
-    <img src="{{ product.image.url }}" alt="{{ product.name }}">
-    <h2>{{ product.name }}</h2>
-    <p>Price: {{ product.price }}</p>
-    <p>Brand: {{ product.brand }}</p>
-    <p>Release Date: {{ product.release_date }}</p>
-    <p>Stock: {{ product.stock }}</p>
-    <p>Description: {{ product.description }}</p>
-    <p>Rating: {{ average_rating }}</p>
-    <form method="POST" action="{% url 'add_to_cart' product.id %}">
-        {% csrf_token %}
-        <button type="submit">Add to Cart</button>
-    </form>
+<div class="product-grid">
+    <div class="product-card">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        <h2>{{ product.name }}</h2>
+        <p>Price: {{ product.price }}</p>
+        <p>Brand: {{ product.brand }}</p>
+        <p>Release Date: {{ product.release_date }}</p>
+        <p>Stock: {{ product.stock }}</p>
+        <p>Description: {{ product.description }}</p>
+        <p>Rating: {{ average_rating }}</p>
+        {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+                <button type="submit">Add to Cart</button>
+            </form>
+        {% else %}
+            <p><a href="{% url 'login' %}">Login</a> to Add to Cart.</p>
+        {% endif %}
+    </div>
 
-    <h3>Reviews</h3>
-    {% for review in reviews %}
+    <div>
+        <h3>Reviews</h3>
         <div>
-            <p><strong>{{ review.user.username }}</strong></p>
-            <p>Rating: {{ review.rating }}</p>
-            <p>{{ review.comment }}</p>
-            <p>{{ review.created_at }}</p>
+            {% for review in reviews %}
+                <div class="product-card">
+                    <p><strong>{{ review.user.first_name }}</strong></p>
+                    <p><strong>{{ review.user.last_name }}</strong></p>
+                    <p>Rating: {{ review.rating }}</p>
+                    <p>{{ review.comment }}</p>
+                    <p>{{ review.created_at }}</p>
+                </div>
+            {% endfor %}
         </div>
-    {% endfor %}
-
-    {% if user.is_authenticated %}
-        <h3>Leave a Review</h3>
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Submit Review</button>
-        </form>
-    {% else %}
-        <p><a href="{% url 'login' %}">Login</a> to leave a review.</p>
-    {% endif %}
+        <br>
+        <div class="product-card">
+            {% if user.is_authenticated %}
+                <h3>Leave a Review</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Submit Review</button>
+                </form>
+            {% else %}
+                <p><a href="{% url 'login' %}">Login</a> to leave a review.</p>
+            {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock %}
 

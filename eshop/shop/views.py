@@ -4,6 +4,7 @@ from .models import Product, Review, CartItem, Category, Brand
 from .forms import CustomUserCreationForm, ReviewForm, CartItemForm
 from django.contrib.auth import login, authenticate
 from django.db.models import Avg, Q
+from django.contrib.auth.forms import AuthenticationForm
 
 def home(request):
     categories = Category.objects.all()
@@ -81,31 +82,13 @@ def cart(request):
     }
     return render(request, 'shop/cart.html', context)
 
-# @login_required
-# def cart(request):
-#     cart_items = CartItem.objects.filter(user=request.user)
-#     total = sum(item.product.price * item.quantity for item in cart_items)
-
-#     if request.method == 'POST':
-#         for item in cart_items:
-#             form = CartItemForm(request.POST, instance=item)
-#             if form.is_valid():
-#                 form.save()
-#         return redirect('cart')
-
-#     context = {
-#         'cart_items': cart_items,
-#         'total': total,
-#     }
-#     return render(request, 'shop/cart.html', context)
-
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')
+            return redirect('profile')
     else:
         form = CustomUserCreationForm()
 
@@ -131,4 +114,3 @@ def remove_from_cart(request, pk):
     item = get_object_or_404(CartItem, pk=pk, user=request.user)
     item.delete()
     return redirect('cart')
-
