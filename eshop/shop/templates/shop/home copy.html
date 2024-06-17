@@ -1,5 +1,6 @@
 {% extends "shop/base.html" %}
 {% load static %}
+
 {% block content %}
 <h2>Products</h2>
 <form method="GET">
@@ -21,16 +22,19 @@
     <input type="number" name="min_rating" placeholder="Min Rating" value="{{ request.GET.min_rating }}">
     <button type="submit">Filter</button>
 </form>
-
-<div class="product-grid">
+<div>
     {% for product in products %}
-    <div class="product-card">
+    <div>
         <img src="{{ product.image.url }}" alt="{{ product.name }}">
         <h3>{{ product.name }}</h3>
-        <p>Price: {{ product.price }}</p>
-        <a href="{% url 'product_detail' product.slug %}">View Details</a>
+        <p>{{ product.price }}</p>
+        <p>{{ product.rating }}</p>
+        <a href="{% url 'product_detail' slug=product.slug %}">View Details</a>
+        <form method="POST" action="{% url 'add_to_cart' product.id %}">
+            {% csrf_token %}
+            <button type="submit">Add to Cart</button>
+        </form>
     </div>
     {% endfor %}
 </div>
 {% endblock %}
-
