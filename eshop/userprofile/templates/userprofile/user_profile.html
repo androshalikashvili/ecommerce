@@ -1,0 +1,27 @@
+{% extends "shop/base.html" %}
+{% block content %}
+<h2>User Profile</h2>
+<a href="{% url 'create_order' %}">Create Order</a>
+<h3>Your Orders</h3>
+<table>
+    <tr>
+        <th>Image</th>
+        <th>Description</th>
+        <th>Proposed Price</th>
+        <th>Delivery Address</th>
+        <th>Actions</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td><img src="{{ order.image.url }}" alt="Order Image" width="100"></td>
+        <td>{{ order.description }}</td>
+        <td>{{ order.proposed_price }}</td>
+        <td>{{ order.delivery_address }}</td>
+        <td>
+            <a href="{% url 'edit_order' order.id %}">Edit</a> |
+            <a href="{% url 'delete_order' order.id %}">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
