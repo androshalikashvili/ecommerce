@@ -1,0 +1,35 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<h2>Cart</h2>
+<form method="POST">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+        {% for item in cart_items %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>
+                <input type="number" name="quantity_{{ item.id }}" value="{{ item.quantity }}">
+            </td>
+            <td>{{ item.product.price }}</td>
+            <td>{{ item.product.price|mul:item.quantity }}</td>
+            <td>
+                <button formaction="{% url 'remove_from_cart' item.id %}">Remove</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <h3>Total: {{ total }}</h3>
+    <button type="submit">Update Cart</button>
+</form>
+{% endblock %}
+

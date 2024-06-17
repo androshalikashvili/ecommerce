@@ -1,0 +1,40 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block content %}
+<h2>Products</h2>
+<form method="GET">
+    <input type="text" name="search" placeholder="Search by name" value="{{ request.GET.search }}">
+    <select name="category">
+        <option value="">All Categories</option>
+        {% for category in categories %}
+        <option value="{{ category.name }}" {% if request.GET.category == category.name %}selected{% endif %}>{{ category.name }}</option>
+        {% endfor %}
+    </select>
+    <select name="brand">
+        <option value="">All Brands</option>
+        {% for brand in brands %}
+        <option value="{{ brand.name }}" {% if request.GET.brand == brand.name %}selected{% endif %}>{{ brand.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="number" name="min_price" placeholder="Min Price" value="{{ request.GET.min_price }}">
+    <input type="number" name="max_price" placeholder="Max Price" value="{{ request.GET.max_price }}">
+    <input type="number" name="min_rating" placeholder="Min Rating" value="{{ request.GET.min_rating }}">
+    <button type="submit">Filter</button>
+</form>
+<div>
+    {% for product in products %}
+    <div>
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.price }}</p>
+        <p>{{ product.rating }}</p>
+        <a href="{% url 'product_detail' slug=product.slug %}">View Details</a>
+        <form method="POST" action="{% url 'add_to_cart' product.id %}">
+            {% csrf_token %}
+            <button type="submit">Add to Cart</button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
