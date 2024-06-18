@@ -1,3 +1,42 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+input[type="text"], input[type="number"], select, button {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
 .product-grid {
     display: flex;
     flex-wrap: wrap;
@@ -5,8 +44,8 @@
 }
 
 .product-card {
-    flex: 1 1 calc(27% - 20px); /* Три карточки в ряд */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    flex: 1 1 calc(27% - 20px);
+    box-shadow: 0 4px 8px rgba(0,0,0,1);
     border-radius: 8px;
     overflow: hidden;
     text-align: center;

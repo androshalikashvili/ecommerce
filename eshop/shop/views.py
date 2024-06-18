@@ -5,11 +5,13 @@ from .forms import CustomUserCreationForm, ReviewForm, CartItemForm
 from django.contrib.auth import login, authenticate
 from django.db.models import Avg, Q
 from django.contrib.auth.forms import AuthenticationForm
+from django.core.paginator import Paginator
 
 def home(request):
     categories = Category.objects.all()
     brands = Brand.objects.all()
     products = Product.objects.all()
+
 
     category = request.GET.get('category')
     brand = request.GET.get('brand')
@@ -31,10 +33,27 @@ def home(request):
     if search:
         products = products.filter(name__icontains=search)
 
+    paginator = Paginator(products, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    def clean_query_params(params):
+        query_dict = params.copy()
+        if 'page' in query_dict:
+            del query_dict['page']
+        return query_dict.urlencode()
+
     context = {
         'categories': categories,
         'brands': brands,
-        'products': products,
+        'products': page_obj,
+        'category': category,
+        'brand': brand,
+        'min_price': min_price,
+        'max_price': max_price,
+        'min_rating': min_rating,
+        'search': search,
+        'query_params': clean_query_params(request.GET)
     }
     return render(request, 'shop/home.html', context)
 
