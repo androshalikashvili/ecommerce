@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Product, Review, CartItem, Category, Brand
-from .forms import CustomUserCreationForm, ReviewForm, CartItemForm
+from .forms import ReviewForm, CartItemForm
 from django.contrib.auth import login, authenticate
 from django.db.models import Avg, Q
-from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator
+
 
 def home(request):
     categories = Category.objects.all()
@@ -37,12 +37,6 @@ def home(request):
     page = request.GET.get('page', 1)
     page_obj = paginator.get_page(page)
 
-    # def clean_query_params(params):
-    #     query_dict = params.copy()
-    #     if 'page' in query_dict:
-    #         del query_dict['page']
-    #     return query_dict.urlencode()
-
     context = {
         'categories': categories,
         'brands': brands,
@@ -53,9 +47,9 @@ def home(request):
         'max_price': max_price,
         'min_rating': min_rating,
         'search': search,
-        # 'query_params': clean_query_params(request.GET)
     }
     return render(request, 'shop/home.html', context)
+
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
@@ -100,22 +94,6 @@ def cart(request):
         'total': total,
     }
     return render(request, 'shop/cart.html', context)
-
-def register(request):
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('profile')
-    else:
-        form = CustomUserCreationForm()
-
-    context = {
-        'form': form,
-    }
-    return render(request, 'shop/register.html', context)
-
 
 @login_required
 def add_to_cart(request, pk):
