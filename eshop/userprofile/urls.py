@@ -2,12 +2,15 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.profile, name='profile'),
     path('create_order/', views.create_order, name='create_order'),
     path('edit_order/<int:order_id>/', views.edit_order, name='edit_order'),
     path('delete_order/<int:order_id>/', views.delete_order, name='delete_order'),
+    path('password_change/', auth_views.PasswordChangeView.as_view(template_name='userprofile/password_change.html'), name='password_change'),
+    path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name='userprofile/password_change_done.html'), name='password_change_done'),
 ]
 
 if settings.DEBUG:

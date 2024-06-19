@@ -28,6 +28,9 @@ class Product(models.Model):
     description = models.TextField()
     stock = models.PositiveIntegerField()
 
+    class Meta:
+        ordering = ('id',)
+
 
     def save(self, *args, **kwargs):
         if not self.slug:

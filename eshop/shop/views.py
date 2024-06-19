@@ -34,8 +34,8 @@ def home(request):
         products = products.filter(name__icontains=search)
 
     paginator = Paginator(products, 3)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    page = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page)
 
     def clean_query_params(params):
         query_dict = params.copy()
