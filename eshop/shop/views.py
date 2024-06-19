@@ -37,11 +37,11 @@ def home(request):
     page = request.GET.get('page', 1)
     page_obj = paginator.get_page(page)
 
-    def clean_query_params(params):
-        query_dict = params.copy()
-        if 'page' in query_dict:
-            del query_dict['page']
-        return query_dict.urlencode()
+    # def clean_query_params(params):
+    #     query_dict = params.copy()
+    #     if 'page' in query_dict:
+    #         del query_dict['page']
+    #     return query_dict.urlencode()
 
     context = {
         'categories': categories,
@@ -53,7 +53,7 @@ def home(request):
         'max_price': max_price,
         'min_rating': min_rating,
         'search': search,
-        'query_params': clean_query_params(request.GET)
+        # 'query_params': clean_query_params(request.GET)
     }
     return render(request, 'shop/home.html', context)
 
