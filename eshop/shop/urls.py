@@ -1,14 +1,17 @@
 from django.urls import path
 from django.conf import settings
-from .views import home, product_detail, cart, remove_from_cart, add_to_cart
+from . import views
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', home, name='home'),
-    path('product/<slug:slug>/', product_detail, name='product_detail'),
-    path('cart/', cart, name='cart'),
-    path('remove_from_cart/<int:pk>/', remove_from_cart, name='remove_from_cart'),
-    path('add_to_cart/<int:pk>/', add_to_cart, name='add_to_cart'),
+    path('', views.home, name='home'),
+    path('product/<slug:slug>/', views.product_detail, name='product_detail'),
+    path('cart/', views.cart, name='cart'),
+    path('remove_from_cart/<int:pk>/', views.remove_from_cart, name='remove_from_cart'),
+    path('add_to_cart/<int:pk>/', views.add_to_cart, name='add_to_cart'),
+    path('create_order/', views.create_order, name='create_order'),
+    path('edit_order/<int:order_id>/', views.edit_order, name='edit_order'),
+    path('delete_order/<int:order_id>/', views.delete_order, name='delete_order'),
 ]
 
 if settings.DEBUG:
