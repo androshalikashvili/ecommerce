@@ -1,0 +1,1 @@
+[{"model": "userprofile.profile", "pk": 1, "fields": {"user": 5, "avatar": "profile_pics/kochora_XH53tBx.webp"}}, {"model": "userprofile.profile", "pk": 2, "fields": {"user": 1, "avatar": "default.jpg"}}]
