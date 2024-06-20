@@ -2,47 +2,50 @@
 {% load static %}
 
 {% block content %}
-<div>
-    <div style="display:flex; gap:5rem; justify-content:space-around"> 
-        <div style="display:flex; flex-direction:column">
-            <div class="product-card" style="width:30rem; margin-top:2rem">
-                <h2>Details</h2>
-                <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                <h2>{{ product.name }}</h2>
-                <p>Price: {{ product.price }}</p>
-                <p>Brand: {{ product.brand }}</p>
-                <p>Release Date: {{ product.release_date }}</p>
-                <p>Stock: {{ product.stock }}</p>
-                <p>Description: {{ product.description }}</p>
-                <p>Rating: {{ average_rating }}</p>
-                {% if user.is_authenticated %}
-                <form method="POST" action="{% url 'add_to_cart' product.id %}" class="btn add-to-cart">
-                    {% csrf_token %}
-                    <button type="submit" class="btn add-to-cart">
-                        <img class="mx-1" src="{% static "/icons/cart-plus.svg" %}" alt="Catalog Icon"
-                            width="32" height="32">
-                    </button>
-                </form>
-                {% else %}
-                    <p><a href="{% url 'login' %}">Login</a> to Add to Cart.</p>
-                {% endif %}
-            </div>
-            
-        <div class="product-card" style="width:30rem; margin-top:2rem">
+
+<div style="display: flex">
+    <div class="product-details" style="width:30rem; margin-top:2rem">
+            <!-- Details Content -->
+        <div class="product-card">
+            <h2>Details</h2>
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <h2>{{ product.name }}</h2>
+            <p>Price: {{ product.price }}</p>
+            <p>Brand: {{ product.brand }}</p>
+            <p>Release Date: {{ product.release_date }}</p>
+            <p>Stock: {{ product.stock }}</p>
+            <p>Description: {{ product.description }}</p>
+            <p>Rating: {{ average_rating }}</p>
             {% if user.is_authenticated %}
-                <h3>Leave a Review</h3>
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit">Submit Review</button>
-                </form>
+            <form method="POST" action="{% url 'add_to_cart' product.id %}" class="btn add-to-cart">
+                {% csrf_token %}
+                <button type="submit" class="btn add-to-cart">
+                    <img class="mx-1" src="{% static "/icons/cart-plus.svg" %}" alt="Catalog Icon"
+                        width="32" height="32">
+                </button>
+            </form>
             {% else %}
-                <p><a href="{% url 'login' %}">Login</a> to leave a review.</p>
+                <p><a href="{% url 'login' %}">Login</a> to Add to Cart.</p>
             {% endif %}
         </div>
+    </div>
+    <div class="review-form">
+        <!-- Leave Reviews Content -->        
+        <div class="product-card" style="width:30rem; margin-left:2rem; margin-top:2rem">
+        {% if user.is_authenticated %}
+            <h3>Leave a Review</h3>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Submit Review</button>
+            </form>
+        {% else %}
+            <p><a href="{% url 'login' %}">Login</a> to leave a review.</p>
+        {% endif %}
         </div>
-    <div>
-    <div style="width:30rem; margin-top:2rem">
+    </div>
+    <div class="reviews" style="margin-left:2rem; margin-top:2rem">
+        <!-- Reviews Content -->
         <h3 style='text-align:center'>Reviews</h3>
         <div>
             {% for review in reviews %}
@@ -57,6 +60,6 @@
         </div>
     </div>
 </div>
-</div>
+
 {% endblock %}
 

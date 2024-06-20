@@ -16,7 +16,6 @@
             </li>
             {% if user.is_authenticated %}
                 <li  style='margin: 1rem'><a href="{% url 'cart' %}">Cart</a></li>
-                {% comment %} <li  style='margin: 1rem'><a href="{% url 'profile_view' %}">Profile</a></li> {% endcomment %}
                 <h5 style='margin: 1rem'><a href="{% url 'profile_view' %}">Profile: </a> {{ user.first_name }}</h5>
                 <h5 style='margin: 1rem'><strong></strong> {{ user.last_name }}</h5>
                 <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}'s avatar" class="img-thumbnail" style="width: 50px; height: 50px;">

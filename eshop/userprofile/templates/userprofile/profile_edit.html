@@ -1,4 +1,5 @@
 {% extends "shop/base.html" %}
+{% load static %}
 {% block content %}
 <form method="POST" enctype="multipart/form-data" style="display:flex; flex-direction:column; width:50%; margin-top:2rem" class="container">
     {% csrf_token %}
@@ -8,6 +9,7 @@
     <h3>Update Avatar</h3>
     <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}'s avatar" class="img-thumbnail" style="width: 150px; height: 150px;">
     {{ p_form.as_p }}
-    <button type="submit" name="update_profile" style="width:200px;">Update Profile</button>
+    <button type="submit" name="profile_edit" style="width:200px;">Update Profile</button>
+    <a href="{% url 'password_change' %}" class="btn btn-primary" style="width:200px;">Change Password</a>
 </form>
 {% endblock %}

@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Product, Review, CartItem, Category, Brand
-from .forms import ReviewForm, CartItemForm
-from django.contrib.auth import login, authenticate
+from .forms import ReviewForm
 from django.db.models import Avg, Q
 from django.core.paginator import Paginator
 from userprofile.models import Order
-from userprofile.forms import OrderForm, UserUpdateForm, ProfileUpdateForm
+from userprofile.forms import OrderForm
 from django.contrib import messages
 
 def home(request):
@@ -87,15 +86,8 @@ def cart(request):
     orders = Order.objects.filter(user=user)
 
     if request.method == 'POST':
-        if 'update_cart' in request.POST:
-            for item in cart_items:
-                quantity = request.POST.get(f'quantity_{item.id}')
-                if quantity:
-                    item.quantity = int(quantity)
-                    item.save()
-            return redirect('cart')
 
-        elif 'create_order' in request.POST:
+        if 'create_order' in request.POST:
             o_form = OrderForm(request.POST, request.FILES)
             if o_form.is_valid():
                 custom_order = o_form.save(commit=False)
@@ -120,6 +112,14 @@ def cart(request):
             messages.success(request, 'Order has been deleted!')
             return redirect('cart')
 
+        elif 'update_cart' in request.POST:
+            for item in cart_items:
+                quantity = request.POST.get(f'quantity_{item.id}')
+                if quantity:
+                    item.quantity = int(quantity)
+                    item.save()
+            return redirect('cart')
+        
     context = {
         'cart_items': cart_items,
         'total': total,
@@ -160,6 +160,7 @@ def delete_order(request, order_id):
         order.delete()
         return redirect('cart')
     return render(request, 'userprofile/delete_order.html', {'order': order})
+
 
 @login_required
 def add_to_cart(request, pk):

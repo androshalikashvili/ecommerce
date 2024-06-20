@@ -6,7 +6,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* height: 100vh; */
 }
 
 form {
@@ -70,20 +69,6 @@ button:hover {
     color: #888;
 }
 
-/* .product-card a {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 10px 15px;
-    background-color: #007BFF;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 4px;
-}
-
-.product-card a:hover {
-    background-color: #0056b3;
-} */
-
 a{
     text-decoration: none;
 }
@@ -92,5 +77,5 @@ a{
     background-color: #323030cb;
 }
 ul li a{
-    color: #45a049;
+    color: #f2f4f2;
 }

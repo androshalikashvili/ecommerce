@@ -25,7 +25,6 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    # rating = models.FloatField(default=0)
     description = models.TextField()
     stock = models.PositiveIntegerField()
 

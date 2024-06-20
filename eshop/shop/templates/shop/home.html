@@ -32,7 +32,6 @@
         <a href="{% url 'product_detail' product.slug %}"><h3>{{ product.name }}</h3></a>
         <p>Price: {{ product.price }}</p>
         <p>Rating: {{ product.average_rating|floatformat:1|default:"No ratings yet" }}</p>
-        {% comment %} <a href="{% url 'product_detail' product.slug %}">View Details</a> {% endcomment %}
         
         {% if user.is_authenticated %}
         <form method="POST" action="{% url 'add_to_cart' product.id %}" class="btn add-to-cart">
