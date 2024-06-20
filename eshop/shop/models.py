@@ -25,12 +25,19 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+    # rating = models.FloatField(default=0)
     description = models.TextField()
     stock = models.PositiveIntegerField()
 
     class Meta:
         ordering = ('id',)
 
+    @property
+    def average_rating(self):
+        reviews = self.reviews.all()
+        if reviews.exists():
+            return sum(review.rating for review in reviews) / reviews.count()
+        return 0
 
     def save(self, *args, **kwargs):
         if not self.slug:

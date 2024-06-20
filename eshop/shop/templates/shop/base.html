@@ -16,7 +16,7 @@
             </li>
             {% if user.is_authenticated %}
                 <li  style='margin: 1rem'><a href="{% url 'cart' %}">Cart</a></li>
-                <li  style='margin: 1rem'><a href="{% url 'profile' %}">Profile</a></li>
+                <li  style='margin: 1rem'><a href="{% url 'profile_view' %}">Profile</a></li>
                 <li  style='margin: 1rem'><a href="{% url 'logout' %}">Logout</a></li>
 
             {% else %}

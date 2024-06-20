@@ -28,10 +28,23 @@
 <div class="product-grid" style='margin: 1rem;'>
     {% for product in products %}
     <div class="product-card">
-        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-        <h3>{{ product.name }}</h3>
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">        
+        <a href="{% url 'product_detail' product.slug %}"><h3>{{ product.name }}</h3></a>
         <p>Price: {{ product.price }}</p>
-        <a href="{% url 'product_detail' product.slug %}">View Details</a>
+        <p>Rating: {{ product.average_rating|floatformat:1|default:"No ratings yet" }}</p>
+        {% comment %} <a href="{% url 'product_detail' product.slug %}">View Details</a> {% endcomment %}
+        
+        {% if user.is_authenticated %}
+        <form method="POST" action="{% url 'add_to_cart' product.id %}" class="btn add-to-cart">
+            {% csrf_token %}
+            <button type="submit" class="btn add-to-cart">
+                <img class="mx-1" src="{% static "/icons/cart-plus.svg" %}" alt="Catalog Icon"
+                    width="32" height="32">
+            </button>
+        </form>
+        {% else %}
+            <p><a href="{% url 'login' %}">Login</a> to Add to Cart.</p>
+        {% endif %}
     </div>
     {% endfor %}
 </div>

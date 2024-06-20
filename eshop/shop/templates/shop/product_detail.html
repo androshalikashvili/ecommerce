@@ -4,6 +4,7 @@
 {% block content %}
 <div class="product-grid">
     <div class="product-card">
+        <h2>Details</h2>
         <img src="{{ product.image.url }}" alt="{{ product.name }}">
         <h2>{{ product.name }}</h2>
         <p>Price: {{ product.price }}</p>
@@ -13,17 +14,20 @@
         <p>Description: {{ product.description }}</p>
         <p>Rating: {{ average_rating }}</p>
         {% if user.is_authenticated %}
-            <form method="POST" action="{% url 'add_to_cart' product.id %}">
-                {% csrf_token %}
-                <button type="submit">Add to Cart</button>
-            </form>
+        <form method="POST" action="{% url 'add_to_cart' product.id %}" class="btn add-to-cart">
+            {% csrf_token %}
+            <button type="submit" class="btn add-to-cart">
+                <img class="mx-1" src="{% static "/icons/cart-plus.svg" %}" alt="Catalog Icon"
+                    width="32" height="32">
+            </button>
+        </form>
         {% else %}
             <p><a href="{% url 'login' %}">Login</a> to Add to Cart.</p>
         {% endif %}
     </div>
 
     <div>
-        <h3>Reviews</h3>
+        <h3 style='text-align:center'>Reviews</h3>
         <div>
             {% for review in reviews %}
                 <div class="product-card">

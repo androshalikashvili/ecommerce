@@ -19,7 +19,7 @@ def home(request):
     max_price = request.GET.get('max_price')
     min_rating = request.GET.get('min_rating')
     search = request.GET.get('search')
-
+    
     if category:
         products = products.filter(category__name=category)
     if brand:
@@ -28,10 +28,17 @@ def home(request):
         products = products.filter(price__gte=min_price)
     if max_price:
         products = products.filter(price__lte=max_price)
+    # if min_rating:
+    #     products = products.filter(rating__gte=min_rating)
     if min_rating:
-        products = products.filter(rating__gte=min_rating)
+        try:
+            min_rating = float(min_rating)
+            products = products.annotate(avg_rating=Avg('reviews__rating')).filter(avg_rating__gte=min_rating)
+        except ValueError:
+            pass
     if search:
         products = products.filter(name__icontains=search)
+    
 
     paginator = Paginator(products, 3)
     page = request.GET.get('page', 1)
