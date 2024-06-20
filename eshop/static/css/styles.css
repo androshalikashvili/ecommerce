@@ -83,3 +83,15 @@ button:hover {
 .product-card a:hover {
     background-color: #0056b3;
 } */
+
+a{
+    text-decoration: none;
+}
+
+.navbar{
+    background-color: #888888cb;
+}
+ul li a{
+    color: #45a049;
+}
+
